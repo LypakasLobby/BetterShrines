@@ -1,5 +1,6 @@
 package com.lypaka.bettershrines.RequirementHandlers;
 
+import com.lypaka.lypakautils.FancyText;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 
@@ -40,6 +41,12 @@ public class InventoryRequirement {
                 metadata = Integer.parseInt(values.get("Metadata"));
 
             }
+            String displayName = null;
+            if (values.containsKey("Display-Name")) {
+
+                displayName = values.get("Display-Name");
+
+            }
             int slotIndex = 0;
             for (ItemStack slot : this.player.inventory.mainInventory) {
 
@@ -53,13 +60,31 @@ public class InventoryRequirement {
 
                         if (playerItemMetadata == metadata) {
 
-                            passMap.put(id, true);
-                            if (values.containsKey("Sacrifice")) {
+                            boolean namePasses = false;
+                            if (displayName != null) {
 
-                                boolean sacrifice = Boolean.parseBoolean(values.get("Sacrifice"));
-                                if (sacrifice) {
+                                if (slot.getDisplayName().getUnformattedComponentText().equalsIgnoreCase(FancyText.getFormattedText(displayName).getUnformattedComponentText())) {
 
-                                    this.sacrificeMap.put(slotIndex, amount);
+                                    namePasses = true;
+
+                                }
+
+                            } else {
+
+                                namePasses = true;
+
+                            }
+                            if (namePasses) {
+
+                                passMap.put(id, true);
+                                if (values.containsKey("Sacrifice")) {
+
+                                    boolean sacrifice = Boolean.parseBoolean(values.get("Sacrifice"));
+                                    if (sacrifice) {
+
+                                        this.sacrificeMap.put(slotIndex, amount);
+
+                                    }
 
                                 }
 

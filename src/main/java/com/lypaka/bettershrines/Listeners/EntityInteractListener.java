@@ -8,6 +8,8 @@ import com.lypaka.bettershrines.Utils;
 import com.lypaka.lypakautils.FancyText;
 import com.lypaka.lypakautils.MiscHandlers.PermissionHandler;
 import com.lypaka.lypakautils.WorldStuff.WorldMap;
+import com.pixelmonmod.pixelmon.api.storage.PlayerPartyStorage;
+import com.pixelmonmod.pixelmon.api.storage.StorageProxy;
 import com.pixelmonmod.pixelmon.entities.pixelmon.PixelmonEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.Hand;
@@ -155,6 +157,14 @@ public class EntityInteractListener {
                     String finalCmd = cmd;
                     triggerCommands.removeIf(c -> c.equalsIgnoreCase(finalCmd));
                     pokemon = Utils.buildPokemonFromCommand(player, cmd);
+
+                }
+
+                PlayerPartyStorage storage = StorageProxy.getParty(player);
+                if (storage.getFirstAblePokemon() == null) {
+
+                    player.sendMessage(FancyText.getFormattedText("&eYou can't activate this shrine with a team of fainted Pokemon!"), player.getUniqueID());
+                    return;
 
                 }
 

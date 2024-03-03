@@ -12,7 +12,7 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle'
 
 group = 'com.lypaka'
-version = '1.16.5-1.0.3'
+version = '1.16.5-1.1.0'
 
 java {
     archivesBaseName = 'BetterShrines'
