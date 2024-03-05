@@ -8,6 +8,7 @@ import com.pixelmonmod.pixelmon.battles.controller.BattleController;
 import com.pixelmonmod.pixelmon.battles.controller.participants.PlayerParticipant;
 import com.pixelmonmod.pixelmon.battles.controller.participants.WildPixelmonParticipant;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class BattleListeners {
@@ -56,6 +57,8 @@ public class BattleListeners {
 
         Pokemon pokemon = event.getPokemon().getPokemon();
         ServerPlayerEntity player = event.getPlayer();
+        ItemStack ball = event.getPokeBall().getBallType().getBallItem();
+        ball.setCount(1);
         if (pokemon.getPersistentData().contains("ShrinePlayer")) {
 
             String shrinePlayerUUID = pokemon.getPersistentData().getString("ShrinePlayer");
@@ -63,6 +66,7 @@ public class BattleListeners {
 
                 event.setCanceled(true);
                 player.sendMessage(FancyText.getFormattedText("&eThis Pokemon was not spawned for you!"), player.getUniqueID());
+                player.addItemStackToInventory(ball);
 
             }
 
