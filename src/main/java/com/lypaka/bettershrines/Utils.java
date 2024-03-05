@@ -52,6 +52,8 @@ public class Utils {
         if (pokemonName != null) {
 
             spawnedPokemon = PokemonBuilder.builder().species(pokemonName).build().getOrCreatePixelmon();
+            boolean hasIVs = false;
+            boolean hasGender = false;
             if (!specs.isEmpty()) {
 
                 for (String pokemonSpec : specs) {
@@ -103,6 +105,7 @@ public class Utils {
                             break;
 
                         case "ivs":
+                            hasIVs = true;
                             String[] s = value.split(", ");
                             int[] iv = new int[6];
                             for (int i = 0; i < 6; i++) {
@@ -119,6 +122,7 @@ public class Utils {
 
                         case "gender":
                         case "g":
+                            hasGender = true;
                             spawnedPokemon.getPokemon().setGender(Gender.getGender(value));
                             break;
 
@@ -160,6 +164,50 @@ public class Utils {
 
                 }
 
+                if (!hasIVs) {
+
+                    int[] ivs = new int[6];
+                    int perfectCount = 0;
+                    for (int i = 0; i < 6; i++) {
+
+                        int value = RandomHelper.getRandomNumberBetween(1, 31);
+                        if (value == 31) perfectCount++;
+
+                    }
+                    if (PixelmonSpecies.isLegendary(spawnedPokemon.getSpecies()) || PixelmonSpecies.isMythical(spawnedPokemon.getSpecies()) || PixelmonSpecies.isUltraBeast(spawnedPokemon.getSpecies())) {
+
+                        if (perfectCount < 3) {
+
+                            List<Integer> notPerfectIVSlots = new ArrayList<>();
+                            for (int i = 0; i < 6; i++) {
+
+                                if (ivs[i] != 31) {
+
+                                    notPerfectIVSlots.add(i);
+
+                                }
+
+                            }
+
+                            for (int i = perfectCount; i <= 3; i++) {
+
+                                int slot = RandomHelper.getRandomElementFromList(notPerfectIVSlots);
+                                ivs[slot] = 31;
+                                notPerfectIVSlots.removeIf(e -> e == slot);
+
+                            }
+
+                        }
+
+                    }
+                    spawnedPokemon.getPokemon().getIVs().fillFromArray(ivs);
+
+                }
+                if (!hasGender) {
+
+                    spawnedPokemon.getPokemon().setGender(Gender.getRandomGender(spawnedPokemon.getPokemon().getForm()));
+
+                }
                 spawnedPokemon.update();
 
             }
