@@ -14,10 +14,11 @@ public class Shrine {
     private final List<String> triggerExecution;
     private final List<String> triggerLocations;
     private final String triggerType;
+    private ConfirmationMenu menu = null;
     private final int maxActivationAmount;
     private final Map<String, String> requirementsMap;
 
-    public Shrine (String name, BasicConfigManager bcm, String mode, List<String> triggerExecution, List<String> triggerLocations, String triggerType, int maxActivationAmount, Map<String, String> requirementsMap) {
+    public Shrine (String name, BasicConfigManager bcm, String mode, List<String> triggerExecution, List<String> triggerLocations, String triggerType, ConfirmationMenu menu, int maxActivationAmount, Map<String, String> requirementsMap) {
 
         this.name = name;
         this.bcm = bcm;
@@ -25,6 +26,7 @@ public class Shrine {
         this.triggerExecution = triggerExecution;
         this.triggerLocations = triggerLocations;
         this.triggerType = triggerType;
+        this.menu = menu;
         this.maxActivationAmount = maxActivationAmount;
         this.requirementsMap = requirementsMap;
 
@@ -69,6 +71,18 @@ public class Shrine {
     public String getTriggerType() {
 
         return this.triggerType;
+
+    }
+
+    public boolean hasConfirmationMenu() {
+
+        return this.menu != null;
+
+    }
+
+    public ConfirmationMenu getMenu() {
+
+        return this.menu;
 
     }
 

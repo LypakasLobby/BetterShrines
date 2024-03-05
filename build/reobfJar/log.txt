@@ -1,5 +1,5 @@
 Java Launcher: C:\Users\ryan9\.gradle\jdks\adoptium-8-x64-hotspot-windows\bin\java.exe
-Arguments: '--in-jar, C:\Users\ryan9\Documents\GitHub\BetterShrines\build\libs\BetterShrines-1.16.5-1.1.0.jar, --out-jar, C:\Users\ryan9\Documents\GitHub\BetterShrines\build\reobfJar\output.jar, --srg-in, C:\Users\ryan9\Documents\GitHub\BetterShrines\build\createMcpToSrg\output.tsrg, --live'
+Arguments: '--in-jar, C:\Users\ryan9\Documents\GitHub\BetterShrines\build\libs\BetterShrines-1.16.5-1.2.0.jar, --out-jar, C:\Users\ryan9\Documents\GitHub\BetterShrines\build\reobfJar\output.jar, --srg-in, C:\Users\ryan9\Documents\GitHub\BetterShrines\build\createMcpToSrg\output.tsrg, --live'
 Classpath:
  - C:\Users\ryan9\.gradle\caches\forge_gradle\maven_downloader\net\md-5\SpecialSource\1.11.0\SpecialSource-1.11.0-shaded.jar
  - C:\Users\ryan9\Documents\GitHub\LIBRARIES\LypakaUtils-1.16.5.jar
@@ -82,13 +82,13 @@ Loading mappings... 50%
 0 packages, 5447 classes, 21481 fields, 38359 methods
 Remapping final jar
 Remapping jar...  2%
-Remapping jar... 12%
+Remapping jar... 11%
 Remapping jar... 22%
-Remapping jar... 32%
+Remapping jar... 30%
 Remapping jar... 41%
-Remapping jar... 51%
+Remapping jar... 50%
 Remapping jar... 61%
-Remapping jar... 71%
+Remapping jar... 72%
 Remapping jar... 80%
-Remapping jar... 90%
+Remapping jar... 91%
 Remapping jar... 100%

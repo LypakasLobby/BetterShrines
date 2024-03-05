@@ -35,6 +35,16 @@ public class PokemonRequirement {
 
         PlayerPartyStorage party = StorageProxy.getParty(this.player);
         Map<Integer, Boolean> passMap = new HashMap<>();
+        Map<String, Boolean> presentInParty = new HashMap<>();
+        if (!this.pokemonMap.isEmpty()) {
+
+            for (Map.Entry<String, Map<String, String>> entry : this.pokemonMap.entrySet()) {
+
+                presentInParty.put(entry.getKey(), false);
+
+            }
+
+        }
         for (int i = 0; i < 6; i++) {
 
             Pokemon pokemon = party.get(i);
@@ -43,6 +53,15 @@ public class PokemonRequirement {
                 if (this.pokemonMap.containsKey(pokemon.getLocalizedName())) {
 
                     passMap.put(i, true);
+                    presentInParty.entrySet().forEach(e -> {
+
+                        if (e.getKey().equalsIgnoreCase(pokemon.getLocalizedName())) {
+
+                            e.setValue(true);
+
+                        }
+
+                    });
                     Map<String, String> map = this.pokemonMap.get(pokemon.getLocalizedName());
                     for (Map.Entry<String, String> specEntry : map.entrySet()) {
 
@@ -357,6 +376,16 @@ public class PokemonRequirement {
         }
 
         boolean passes = true;
+        for (Map.Entry<String, Boolean> entry : presentInParty.entrySet()) {
+
+            if (!entry.getValue()) {
+
+                passes = false;
+                break;
+
+            }
+
+        }
         for (Map.Entry<Integer, Boolean> entry : passMap.entrySet()) {
 
             if (!entry.getValue()) {

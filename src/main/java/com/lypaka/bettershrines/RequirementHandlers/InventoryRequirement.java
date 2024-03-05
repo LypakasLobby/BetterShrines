@@ -1,6 +1,9 @@
 package com.lypaka.bettershrines.RequirementHandlers;
 
 import com.lypaka.lypakautils.FancyText;
+import com.pixelmonmod.pixelmon.api.pokemon.item.pokeball.PokeBallRegistry;
+import com.pixelmonmod.pixelmon.api.storage.NbtKeys;
+import com.pixelmonmod.pixelmon.items.PokeBallItem;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 
@@ -51,6 +54,11 @@ public class InventoryRequirement {
             for (ItemStack slot : this.player.inventory.mainInventory) {
 
                 String playerItemID = slot.getItem().getRegistryName().toString();
+                if (slot.getItem() instanceof PokeBallItem) {
+
+                    playerItemID = getActualPokeBallNameBecausePixelmonChangedThisForLiterallyNoReasonLOL(slot);
+
+                }
                 int playerItemCount = slot.getCount();
                 int playerItemMetadata = slot.getDamage();
 
@@ -87,6 +95,7 @@ public class InventoryRequirement {
                                     }
 
                                 }
+                                break;
 
                             }
 
@@ -126,6 +135,19 @@ public class InventoryRequirement {
             item.setCount(item.getCount() - entry.getValue());
 
         }
+
+    }
+
+    public static String getActualPokeBallNameBecausePixelmonChangedThisForLiterallyNoReasonLOL (ItemStack item) {
+
+        String ball = "poke_ball";
+        if (item.hasTag()) {
+
+            ball = PokeBallRegistry.getPokeBall(item.getTag().getString(NbtKeys.POKE_BALL_ID)).getValue().get().getName();
+
+        }
+
+        return "pixelmon:" + ball.replace(" ", "_").toLowerCase();
 
     }
 

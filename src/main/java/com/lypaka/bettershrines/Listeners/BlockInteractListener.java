@@ -57,6 +57,7 @@ public class BlockInteractListener {
         Map<String, Boolean> passMap = new HashMap<>();
         InventoryRequirement inventoryRequirement = null;
         PokemonRequirement pokemonRequirement = null;
+        MoneyRequirement moneyRequirement = null;
 
         for (Map.Entry<String, String> requirement : requirementsMap.entrySet()) {
 
@@ -108,6 +109,18 @@ public class BlockInteractListener {
                 List<String> weathers = shrine.getConfigManager().getConfigNode(0, "Requirements", "Weather").getList(TypeToken.of(String.class));
                 passMap.put("Weather", WeatherRequirement.passes(player, weathers));
 
+            } else if (requirement.getKey().equalsIgnoreCase("Money")) {
+
+                int amount = shrine.getConfigManager().getConfigNode(0, "Requirements", "Money", "Amount").getInt();
+                boolean charges = false;
+                if (!shrine.getConfigManager().getConfigNode(0, "Requirements", "Money", "Player-Pays").isVirtual()) {
+
+                    charges = shrine.getConfigManager().getConfigNode(0, "Requirements", "Money", "Player-Pays").getBoolean();
+
+                }
+                moneyRequirement = new MoneyRequirement(player, amount, charges);
+                passMap.put("Money", moneyRequirement.passes());
+
             }
 
         }
@@ -156,7 +169,7 @@ public class BlockInteractListener {
 
                     String finalCmd = cmd;
                     triggerCommands.removeIf(c -> c.equalsIgnoreCase(finalCmd));
-                    pokemon = Utils.buildPokemonFromCommand(player, cmd);
+                    pokemon = Utils.buildPokemonFromCommand(cmd);
 
                 }
 
@@ -169,22 +182,8 @@ public class BlockInteractListener {
                 }
 
             }
-            ShrineActivateEvent shrineActivateEvent = new ShrineActivateEvent(player, shrine, pokemon, triggerCommands);
+            ShrineActivateEvent shrineActivateEvent = new ShrineActivateEvent(player, shrine, pokemon, triggerCommands, inventoryRequirement, pokemonRequirement, moneyRequirement);
             MinecraftForge.EVENT_BUS.post(shrineActivateEvent);
-            if (!shrineActivateEvent.isCanceled()) {
-
-                if (inventoryRequirement != null) {
-
-                    inventoryRequirement.removeIfNeeded();
-
-                }
-                if (pokemonRequirement != null) {
-
-                    pokemonRequirement.removeIfNeeded();
-
-                }
-
-            }
 
         }
 

@@ -1,9 +1,14 @@
 package com.lypaka.bettershrines.Listeners;
 
+import com.google.common.collect.Lists;
 import com.lypaka.bettershrines.API.ShrineActivateEvent;
+import com.lypaka.bettershrines.ShrineRegistry.ConfirmationMenu;
+import com.lypaka.bettershrines.ShrineRegistry.MenuButton;
 import com.lypaka.bettershrines.ShrineRegistry.Shrine;
+import com.lypaka.lypakautils.FancyText;
 import com.lypaka.lypakautils.MiscHandlers.PermissionHandler;
-import com.pixelmonmod.pixelmon.Pixelmon;
+import com.pixelmonmod.pixelmon.api.dialogue.Choice;
+import com.pixelmonmod.pixelmon.api.dialogue.Dialogue;
 import com.pixelmonmod.pixelmon.api.storage.PlayerPartyStorage;
 import com.pixelmonmod.pixelmon.api.storage.StorageProxy;
 import com.pixelmonmod.pixelmon.battles.BattleRegistry;
@@ -17,6 +22,8 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class ShrineListener {
 
     @SubscribeEvent
@@ -24,6 +31,71 @@ public class ShrineListener {
 
         ServerPlayerEntity player = event.getPlayer();
         Shrine shrine = event.getShrine();
+        if (shrine.hasConfirmationMenu()) {
+
+            ConfirmationMenu menu = shrine.getMenu();
+            Dialogue.DialogueBuilder builder = new Dialogue.DialogueBuilder();
+            builder.setName(FancyText.getFormattedString(menu.getTitle()));
+            String messages = FancyText.getFormattedString(String.join("\\n", menu.getText()));
+            builder.setText(messages);
+            builder.requireManualClose();
+            for (int i = 0; i < menu.getButtons().length; i++) {
+
+                MenuButton button = menu.getButtons()[i];
+                builder.addChoice(new Choice(
+                                FancyText.getFormattedString(button.getDisplayText()),
+                                (choiceEvent -> {
+
+                                    player.closeContainer();
+                                    if (!button.getCommands().isEmpty()) {
+
+                                        for (String c : button.getCommands()) {
+
+                                            player.getServer().getCommandManager().handleCommand(player.getServer().getCommandSource(), c.replace("%player%", player.getName().getString()));
+
+                                        }
+
+                                    }
+                                    if (!button.doesCancel()) {
+
+                                        activateShrine(player, shrine, event);
+
+                                    }
+
+                                })
+
+                        )
+
+                );
+
+            }
+            Dialogue.setPlayerDialogueData(player, Lists.newArrayList(builder.build()), true);
+
+        } else {
+
+            activateShrine(player, shrine, event);
+
+        }
+
+    }
+
+    private static void activateShrine (ServerPlayerEntity player, Shrine shrine, ShrineActivateEvent event) {
+
+        if (event.getInventoryRequirement() != null) {
+
+            event.getInventoryRequirement().removeIfNeeded();
+
+        }
+        if (event.getPokemonRequirement() != null) {
+
+            event.getPokemonRequirement().removeIfNeeded();
+
+        }
+        if (event.getMoneyRequirement() != null) {
+
+            event.getMoneyRequirement().payFeeIfNeeded();
+
+        }
         MinecraftServer server = player.world.getServer();
         if (shrine.getMaxActivationAmount() != 0) {
 

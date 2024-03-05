@@ -17,7 +17,7 @@ import java.util.List;
 
 public class Utils {
 
-    public static PixelmonEntity buildPokemonFromCommand (ServerPlayerEntity player, String command) {
+    public static PixelmonEntity buildPokemonFromCommand (String command) {
 
         PixelmonEntity spawnedPokemon = null;
         String[] args = command.split(" ");

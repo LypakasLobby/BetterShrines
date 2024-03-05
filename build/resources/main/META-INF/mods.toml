@@ -63,12 +63,6 @@ description='''
   ordering="NONE"
   side="SERVER"
 [[dependencies.bettershrines]]
-  modId="gooeylibs2"
-  mandatory=true
-  versionRange="[2.3.2,)"
-  ordering="NONE"
-  side="SERVER"
-[[dependencies.bettershrines]]
  modId="pixelmon"
  mandatory=true
  versionRange="[9,)"

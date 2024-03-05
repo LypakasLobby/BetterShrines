@@ -3,11 +3,15 @@ package com.lypaka.bettershrines.Listeners;
 import com.google.common.reflect.TypeToken;
 import com.lypaka.bettershrines.API.ShrineActivateEvent;
 import com.lypaka.bettershrines.RequirementHandlers.*;
+import com.lypaka.bettershrines.ShrineRegistry.ConfirmationMenu;
+import com.lypaka.bettershrines.ShrineRegistry.MenuButton;
 import com.lypaka.bettershrines.ShrineRegistry.Shrine;
 import com.lypaka.bettershrines.Utils;
 import com.lypaka.lypakautils.FancyText;
 import com.lypaka.lypakautils.MiscHandlers.PermissionHandler;
 import com.lypaka.lypakautils.WorldStuff.WorldMap;
+import com.pixelmonmod.pixelmon.api.dialogue.Choice;
+import com.pixelmonmod.pixelmon.api.dialogue.Dialogue;
 import com.pixelmonmod.pixelmon.api.storage.PlayerPartyStorage;
 import com.pixelmonmod.pixelmon.api.storage.StorageProxy;
 import com.pixelmonmod.pixelmon.entities.pixelmon.PixelmonEntity;
@@ -19,10 +23,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class EntityInteractListener {
 
@@ -57,6 +58,7 @@ public class EntityInteractListener {
         Map<String, Boolean> passMap = new HashMap<>();
         InventoryRequirement inventoryRequirement = null;
         PokemonRequirement pokemonRequirement = null;
+        MoneyRequirement moneyRequirement = null;
 
         for (Map.Entry<String, String> requirement : requirementsMap.entrySet()) {
 
@@ -108,6 +110,18 @@ public class EntityInteractListener {
                 List<String> weathers = shrine.getConfigManager().getConfigNode(0, "Requirements", "Weather").getList(TypeToken.of(String.class));
                 passMap.put("Weather", WeatherRequirement.passes(player, weathers));
 
+            } else if (requirement.getKey().equalsIgnoreCase("Money")) {
+
+                int amount = shrine.getConfigManager().getConfigNode(0, "Requirements", "Money", "Amount").getInt();
+                boolean charges = false;
+                if (!shrine.getConfigManager().getConfigNode(0, "Requirements", "Money", "Player-Pays").isVirtual()) {
+
+                    charges = shrine.getConfigManager().getConfigNode(0, "Requirements", "Money", "Player-Pays").getBoolean();
+
+                }
+                moneyRequirement = new MoneyRequirement(player, amount, charges);
+                passMap.put("Money", moneyRequirement.passes());
+
             }
 
         }
@@ -156,7 +170,7 @@ public class EntityInteractListener {
 
                     String finalCmd = cmd;
                     triggerCommands.removeIf(c -> c.equalsIgnoreCase(finalCmd));
-                    pokemon = Utils.buildPokemonFromCommand(player, cmd);
+                    pokemon = Utils.buildPokemonFromCommand(cmd);
 
                 }
 
@@ -169,22 +183,9 @@ public class EntityInteractListener {
                 }
 
             }
-            ShrineActivateEvent shrineActivateEvent = new ShrineActivateEvent(player, shrine, pokemon, triggerCommands);
+
+            ShrineActivateEvent shrineActivateEvent = new ShrineActivateEvent(player, shrine, pokemon, triggerCommands, inventoryRequirement, pokemonRequirement, moneyRequirement);
             MinecraftForge.EVENT_BUS.post(shrineActivateEvent);
-            if (!shrineActivateEvent.isCanceled()) {
-
-                if (inventoryRequirement != null) {
-
-                    inventoryRequirement.removeIfNeeded();
-
-                }
-                if (pokemonRequirement != null) {
-
-                    pokemonRequirement.removeIfNeeded();
-
-                }
-
-            }
 
         }
 
