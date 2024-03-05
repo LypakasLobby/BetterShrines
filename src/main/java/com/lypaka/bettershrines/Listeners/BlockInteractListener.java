@@ -152,7 +152,7 @@ public class BlockInteractListener {
 
             PixelmonEntity pokemon = null;
             ArrayList<String> triggerCommands = new ArrayList<>(shrine.getTriggerExecution());
-            if (shrine.getMode().equalsIgnoreCase("auto-start")) {
+            if (shrine.getMode().equalsIgnoreCase("auto-start") || shrine.getMode().equalsIgnoreCase("lock")) {
 
                 String cmd = null;
                 for (String s : triggerCommands) {

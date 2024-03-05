@@ -1,5 +1,5 @@
 Java Launcher: C:\Users\ryan9\.gradle\jdks\adoptium-8-x64-hotspot-windows\bin\java.exe
-Arguments: '--in-jar, C:\Users\ryan9\Documents\GitHub\BetterShrines\build\libs\BetterShrines-1.16.5-1.2.0.jar, --out-jar, C:\Users\ryan9\Documents\GitHub\BetterShrines\build\reobfJar\output.jar, --srg-in, C:\Users\ryan9\Documents\GitHub\BetterShrines\build\createMcpToSrg\output.tsrg, --live'
+Arguments: '--in-jar, C:\Users\ryan9\Documents\GitHub\BetterShrines\build\libs\BetterShrines-1.16.5-1.2.1.jar, --out-jar, C:\Users\ryan9\Documents\GitHub\BetterShrines\build\reobfJar\output.jar, --srg-in, C:\Users\ryan9\Documents\GitHub\BetterShrines\build\createMcpToSrg\output.tsrg, --live'
 Classpath:
  - C:\Users\ryan9\.gradle\caches\forge_gradle\maven_downloader\net\md-5\SpecialSource\1.11.0\SpecialSource-1.11.0-shaded.jar
  - C:\Users\ryan9\Documents\GitHub\LIBRARIES\LypakaUtils-1.16.5.jar

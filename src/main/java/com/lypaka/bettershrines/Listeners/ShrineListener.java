@@ -9,6 +9,7 @@ import com.lypaka.lypakautils.FancyText;
 import com.lypaka.lypakautils.MiscHandlers.PermissionHandler;
 import com.pixelmonmod.pixelmon.api.dialogue.Choice;
 import com.pixelmonmod.pixelmon.api.dialogue.Dialogue;
+import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
 import com.pixelmonmod.pixelmon.api.storage.PlayerPartyStorage;
 import com.pixelmonmod.pixelmon.api.storage.StorageProxy;
 import com.pixelmonmod.pixelmon.battles.BattleRegistry;
@@ -147,6 +148,8 @@ public class ShrineListener {
 
             PixelmonEntity pokemon = event.getPokemon();
             if (pokemon == null) return;
+            pokemon.setPositionAndUpdate(player.getPosX(), player.getPosY(), player.getPosZ());
+            player.world.addEntity(pokemon);
             WildPixelmonParticipant wpp = new WildPixelmonParticipant(pokemon);
             BattleParticipant[] wilds = new BattleParticipant[]{wpp};
             PlayerPartyStorage party = StorageProxy.getParty(player);
@@ -154,6 +157,15 @@ public class ShrineListener {
             BattleParticipant[] players = new BattleParticipant[]{pp};
             BattleController bcb = new BattleController(wilds, players, new BattleRules());
             BattleRegistry.registerBattle(bcb);
+
+        } else if (event.getShrine().getMode().equalsIgnoreCase("lock")) {
+
+            PixelmonEntity pixelmon = event.getPokemon();
+            if (pixelmon == null) return;
+            Pokemon pokemon = pixelmon.getPokemon();
+            pokemon.getPersistentData().putString("ShrinePlayer:", player.getUniqueID().toString());
+            pixelmon.setPositionAndUpdate(player.getPosX(), player.getPosY(), player.getPosZ());
+            player.world.addEntity(pixelmon);
 
         }
         for (String c : event.getCommands()) {
