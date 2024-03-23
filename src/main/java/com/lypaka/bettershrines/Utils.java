@@ -171,6 +171,7 @@ public class Utils {
                     for (int i = 0; i < 6; i++) {
 
                         int value = RandomHelper.getRandomNumberBetween(1, 31);
+                        ivs[i] = value;
                         if (value == 31) perfectCount++;
 
                     }

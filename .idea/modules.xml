@@ -4,6 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/bettershrines.main.iml" filepath="$PROJECT_DIR$/.idea/modules/bettershrines.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/bettershrines.test.iml" filepath="$PROJECT_DIR$/.idea/modules/bettershrines.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.lypaka.bettershrines.main.iml" filepath="$PROJECT_DIR$/.idea/modules/com.lypaka.bettershrines.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.lypaka.bettershrines.test.iml" filepath="$PROJECT_DIR$/.idea/modules/com.lypaka.bettershrines.test.iml" />
     </modules>
   </component>
 </project>
