@@ -172,6 +172,7 @@ public class EntityInteractListener {
                     triggerCommands.removeIf(c -> c.equalsIgnoreCase(finalCmd));
                     pokemon = Utils.buildPokemonFromCommand(cmd);
                     pokemon.setPositionAndUpdate(player.getPosX(), player.getPosY(), player.getPosZ());
+                    pokemon.setSpawnLocation(pokemon.getDefaultSpawnLocation());
 
                 }
 

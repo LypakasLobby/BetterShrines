@@ -165,6 +165,7 @@ public class ShrineListener {
             Pokemon pokemon = pixelmon.getPokemon();
             pokemon.getPersistentData().putString("ShrinePlayer:", player.getUniqueID().toString());
             pixelmon.setPositionAndUpdate(player.getPosX(), player.getPosY(), player.getPosZ());
+            pixelmon.setSpawnLocation(pixelmon.getDefaultSpawnLocation());
             player.world.addEntity(pixelmon);
 
         }

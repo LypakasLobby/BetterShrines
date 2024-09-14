@@ -38,7 +38,7 @@ public class InventoryRequirement {
                 amount = Integer.parseInt(values.get("Amount"));
 
             }
-            int metadata = 0;
+            int metadata = -1;
             if (values.containsKey("Metadata")) {
 
                 metadata = Integer.parseInt(values.get("Metadata"));
@@ -66,7 +66,7 @@ public class InventoryRequirement {
 
                     if (playerItemCount >= amount) {
 
-                        if (playerItemMetadata == metadata) {
+                        if (playerItemMetadata == metadata || metadata == -1) {
 
                             boolean namePasses = false;
                             if (displayName != null) {

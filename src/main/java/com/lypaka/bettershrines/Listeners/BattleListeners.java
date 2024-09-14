@@ -19,6 +19,7 @@ public class BattleListeners {
         WildPixelmonParticipant wpp;
         PlayerParticipant pp;
         BattleController bc = event.getBattleController();
+        bc.update();
 
         if (bc.participants.get(0) instanceof WildPixelmonParticipant && bc.participants.get(1) instanceof PlayerParticipant) {
 
